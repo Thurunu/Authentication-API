@@ -1,5 +1,5 @@
 import express from 'express';
-import { Login, logout, register, sendVerifyOtp, verifyEmail } from '../controllers/authController.js';
+import { isAuthenticated, Login, logout, register, resetPassword, sendRestOtp, sendVerifyOtp, verifyEmail } from '../controllers/authController.js';
 import userAuth from '../middleware/userAuth.js';
 
 const authRouter = express.Router();
@@ -19,4 +19,8 @@ authRouter.post('/send-verify-otp', userAuth, sendVerifyOtp);
 // Route to verify user account using OTP (requires user to be authenticated)
 authRouter.post('/verify-account', userAuth, verifyEmail);
 
+authRouter.post('/is-auth', userAuth, isAuthenticated);
+
+authRouter.post('/send-reset-otp', sendRestOtp);
+authRouter.post('/reset', resetPassword);
 export default authRouter;
