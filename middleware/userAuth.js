@@ -1,6 +1,7 @@
 import JWT from "jsonwebtoken";
 
 const userAuth = async (req, res, next) => {
+  console.log("Cookies:", req.cookies);
   const { token } = req.cookies;
 
   if (!token) {
@@ -14,10 +15,10 @@ const userAuth = async (req, res, next) => {
       req.body.userId = tokenDecode.id;
       next(); // Proceed to the next middleware or route handler
     } else {
-      return res.status(401).json({ success: false, message: "Invalid token. Login Again." });
+      return res.json({ success: false, message: "Invalid token. Login Again." });
     }
   } catch (error) {
-    return res.status(401).json({ success: false, message: "Token verification failed. " + error.message });
+    return res.json({ success: false, message: "Token verification failed. " + error.message });
   }
 };
 

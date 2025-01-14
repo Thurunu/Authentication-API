@@ -2,6 +2,7 @@ import bcrypt from "bcryptjs"; // Library for hashing passwords securely
 import jwt from "jsonwebtoken"; // Library for generating JSON Web Tokens
 import userModel from "../models/userModel.js"; // Importing the user model for database operations
 import transporter from "../config/nodemailer.js";
+import {EMAIL_VERIFY_TEMPLATE, PASSWORD_RESET_TEMPLATE} from "../config/emailTemplates.js";
 
 // Function to handle user registration
 export const register = async (req, res) => {
@@ -94,6 +95,7 @@ export const Login = async (req, res) => {
           secure: process.env.NODE_ENV === "production", // Use secure cookies in production
           sameSite: process.env.NODE_ENV === "production" ? "none" : "strict", // Cross-site settings
           maxAge: 7 * 24 * 60 * 60 * 1000, // Cookie validity: 7 days
+          path: "/", // Set the cookie at the root path
         });
 
         // Send a success response
@@ -154,8 +156,9 @@ export const sendVerifyOtp = async (req, res) => {
       const mailOptions = {
         from: process.env.SMTP_USER,
         to: user.email,
-        subject: "Verification OTP",
-        text: `Your OTP for account verification is ${otp}. It will expire in 24 hours.`,
+        subject: "Account Verification OTP",
+        // text: `Your OTP for account verification is ${otp}. It will expire in 24 hours.`,
+        html: EMAIL_VERIFY_TEMPLATE.replace("{{otp}}", otp).replace("{{email}}", user.email)
       };
       await transporter.sendMail(mailOptions);
 
@@ -253,7 +256,8 @@ export const sendRestOtp = async (req, res) => {
         from: process.env.SMTP_USER,
         to: user.email,
         subject: "Password Reset OTP",
-        text: `Your OTP for account verification is ${otp}. It will expire in 24 hours.`,
+        // text: `Your OTP for account verification is ${otp}. It will expire in 24 hours.`,
+        html: PASSWORD_RESET_TEMPLATE.replace("{{otp}}", otp).replace("{{email}}", user.email)
       };
       await transporter.sendMail(mailOptions);
 
@@ -268,7 +272,7 @@ export const sendRestOtp = async (req, res) => {
 
 export const resetPassword = async (req, res) => {
   const {email, otp, password} = req.body;
-  console.log(email, otp, password);
+ 
   if (!email || !otp || !password){
     return res.json({ success: false, message: "All fields are required" });
   }
