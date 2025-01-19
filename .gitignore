@@ -11,22 +11,62 @@ yarn-error.log*
 
 # Environment variables
 .env
+.env.*
 
 # OS generated files
 .DS_Store
+.AppleDouble
+.LSOverride
 Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Dependency caches
+.npm/
+.yarn/*
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnpm-debug.log
+
+# Test coverage
+coverage/
+.nyc_output/
 
 # Build files
 dist/
 build/
-
-# IDE specific files
-.vscode/
-.idea/
+out/
+export/
 
 # Temporary files
 tmp/
 temp/
 
-# .env file
-.env
+# IDE specific files
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+*.code-workspace
+
+# Debugging files
+debug.log
+*.pid
+*.seed
+*.pid.lock
+
+# Database files
+*.sqlite
+*.sqlite3
+db.json
+
+# Docker-related
+docker-compose.override.yml
+.dockerignore
+
+# Cloud deployment files
+*.tfstate
+*.tfstate.*
+.vaultpass

@@ -230,7 +230,6 @@ export const isAuthenticated = async (req, res) => {
 // Function to handle reset password
 export const sendRestOtp = async (req, res) => {
   const {email} = req.body;
-  console.log(email);
   if (!email){
     return res.json({ success: false, message: "Email is required" });
   }
